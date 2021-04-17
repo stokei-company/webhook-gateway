@@ -20,6 +20,6 @@ import { SERVER_HOST, SERVER_PORT } from './environments';
   
   const logger = new Logger('Webhook - Gateway');
 
-  await app.listen(SERVER_PORT, SERVER_HOST);
+  await app.listen(SERVER_PORT || 3000, SERVER_HOST);
   logger.log(`Server started at (${await app.getUrl()})`);
 })();
