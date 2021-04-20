@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:12.13-alpine AS builder-webhook-gateway
+FROM node:lts-alpine AS builder
 
 # Use /app as the CWD
 WORKDIR /app            
@@ -18,7 +18,7 @@ RUN npm run build
 
 # Final stage
 
-FROM node:12.13-alpine AS webhook-gateway
+FROM node:lts-alpine AS webhook-gateway
 
 # Set node environment to production
 ENV NODE_ENV production
@@ -46,7 +46,7 @@ USER node
 RUN npm i --only=production
 
 # Copy js files and change ownership to user node
-COPY --chown=node:node --from=builder-webhook-gateway /app/dist ./dist
+COPY --chown=node:node --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
