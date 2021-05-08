@@ -6,6 +6,7 @@ import * as rateLimit from 'express-rate-limit';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { SERVER_HOST, SERVER_PORT } from './environments';
+import { CheckExistsXmlMiddleware } from './shared/middlewares/check-exists-xml.middleware';
 
 (async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
