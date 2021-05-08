@@ -5,7 +5,7 @@ import { PaymentsService } from './payments.service';
 export class PaymentsController {
 	constructor(private readonly paymentsService: PaymentsService) { }
 
-	@Post('postback')
+	@Post('status')
 	changeStatus(
 		@Query() params: any,
 		@Body() body: any
@@ -14,7 +14,7 @@ export class PaymentsController {
 			const queryParams = params || {};
 			const bodyParams = body || {};
 
-			let status = bodyParams.current_status;
+			let status = bodyParams.current_status || bodyParams.status;
 			return this.paymentsService.changeStatus({
 				...queryParams,
 				...bodyParams,
