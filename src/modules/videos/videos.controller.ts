@@ -21,7 +21,7 @@ export class VideosController {
 			return this.videosService.changeStatus({
 				...queryParams,
 				...bodyParams,
-				videoId: queryParams.videoId,
+				filename: queryParams.filename,
 				status
 			});
 		} catch (error) { }

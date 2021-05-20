@@ -10,6 +10,11 @@ export class VideosService {
 
 	async changeStatus(data: any) {
 		try {
+			const video = await this.videosService.findByFilename(data.filename);
+			if(!video){
+				throw new Error("Video not found!");
+			}
+			
 			let status = data.status;
 			/*
 				downloading ->	Video is being downloaded to Qencode server.
@@ -26,11 +31,21 @@ export class VideosService {
 				completed: VideoStatus.AVAILABLE,
 			};
 			status = statusResponse[status];
-			const video = await this.videosService.findByFilename(data.filename);
+
+			const videos = new Array(data.videos);
+			const sizes = videos
+				.map(video => video.meta.height ? "" + (video.meta.height) : null)
+				.filter(item => item !== null);
+			const volume = data.source_size;
+			const duration = data.duration;
+
 			return {
 				ok: await this.videosService.update({
 					id: video && video.id,
 					status,
+					volume,
+					duration,
+					sizes,
 				}),
 				status,
 			};
