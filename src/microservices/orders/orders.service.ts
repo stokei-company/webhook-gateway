@@ -6,7 +6,7 @@ import { ApproveOrderDTO } from './dtos/approve-order.dto';
 import { CancelOrderDTO } from './dtos/cancel-order.dto';
 
 @Injectable()
-export class OrdersService extends ServiceMicroservice {
+export class OrdersMicroserviceService extends ServiceMicroservice {
     constructor(
         @Inject(ORDERS_SERVICE)
         client: ClientProxy

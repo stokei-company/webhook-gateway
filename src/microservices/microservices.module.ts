@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrdersModule } from './orders/orders.module';
+import { OrdersMicroserviceModule } from './orders/orders.module';
+import { VideosMicroserviceModule } from './videos/videos.module';
 
 const Modules = [
-  OrdersModule,
+  OrdersMicroserviceModule,
+  VideosMicroserviceModule,
 ];
 
 @Module({

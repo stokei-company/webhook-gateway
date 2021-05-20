@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { OrdersService } from '~/microservices/orders/orders.service';
+import { OrdersMicroserviceService } from '~/microservices/orders/orders.service';
 import { ChangePaymentStatusDTO } from './dto/change-payment-status.dto';
 
 @Injectable()
 export class PaymentsService {
 	constructor(
-		private readonly ordersService: OrdersService,
+		private readonly ordersService: OrdersMicroserviceService,
 	) { }
 
 	async changeStatus(data: ChangePaymentStatusDTO) {

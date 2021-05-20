@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { OrdersClient } from './orders.client';
-import { OrdersService } from './orders.service';
+import { OrdersMicroserviceService } from './orders.service';
 
 @Module({
   imports: [
     OrdersClient,
   ],
   providers: [
-    OrdersService,
+    OrdersMicroserviceService,
   ],
   exports: [
-    OrdersService,
+    OrdersMicroserviceService,
   ]
 })
-export class OrdersModule {}
+export class OrdersMicroserviceModule {}
