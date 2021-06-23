@@ -17,18 +17,3 @@ export const SERVER_HOST: string = process.env.SERVER_HOST;
 export const SERVER_URL: string = process.env.SERVER_URL;
 
 export const MICROSERVICE_URL: string = process.env.MICROSERVICE_URL;
-
-// ------- URLS -------
-export const FRONTEND_AUTH_URL: string = process.env.FRONTEND_AUTH_URL;
-export const FRONTEND_AUTH_SUCCESS_URL: string = process.env.FRONTEND_AUTH_SUCCESS_URL;
-export const FRONTEND_AUTH_ERROR_URL: string = process.env.FRONTEND_AUTH_ERROR_URL;
-
-// ------- SECRETS -------
-export const FACEBOOK_APP_ID: string = process.env.FACEBOOK_APP_ID;
-export const FACEBOOK_APP_SECRET: string = process.env.FACEBOOK_APP_SECRET;
-
-export const GOOGLE_APP_ID: string = process.env.GOOGLE_APP_ID;
-export const GOOGLE_APP_SECRET: string = process.env.GOOGLE_APP_SECRET;
-
-export const TWITTER_APP_ID: string = process.env.TWITTER_APP_ID;
-export const TWITTER_APP_SECRET: string = process.env.TWITTER_APP_SECRET;

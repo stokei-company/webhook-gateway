@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-gateway
+  template:
+    metadata:
+      labels:
+        app: webhook-gateway
+    spec:
+      containers:
+        - name: webhook-gateway
+          image: stokei/webhook-gateway:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources: {}
+          imagePullPolicy: Always
+          env:
+            - name: SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: urls-configmap
+                  key: webhook-gateway-url
+            - name: MICROSERVICE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: url
