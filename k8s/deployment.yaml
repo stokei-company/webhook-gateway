@@ -12,6 +12,8 @@ spec:
       labels:
         app: webhook-gateway
     spec:
+      imagePullSecrets:
+      - name: registry-credentials
       containers:
         - name: webhook-gateway
           image: stokei/webhook-gateway:latest

@@ -10,7 +10,7 @@ spec:
   tls:
     - hosts:
         - webhook.stokei.com
-      secretName: stokei-tls
+      secretName: webhook-gateway-tls
   rules:
     - host: webhook.stokei.com
       http:
