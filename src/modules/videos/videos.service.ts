@@ -18,8 +18,16 @@ export class VideosService {
       if (!assetId) {
         throw new Error('MuxAsset not found!');
       }
-      const videoId = data.data?.passthrough;
-      let statusBody = data.data?.status;
+      const videoId = data.data?.passthrough || data.passthrough;
+      let statusBody = data.data?.status || data.status;
+
+      logger.log(
+        JSON.stringify({
+          videoId,
+          statusBody,
+          data
+        })
+      );
 
       const mux = new Mux();
       let asset = null;
@@ -35,6 +43,12 @@ export class VideosService {
         throw new Error('Video not found!');
       }
 
+      logger.log(
+        JSON.stringify({
+          video
+        })
+      );
+
       let status = null;
       if (statusBody === 'ready') {
         status = VideoStatus.AVAILABLE;
@@ -42,7 +56,13 @@ export class VideosService {
         status = VideoStatus.CANCELED;
       }
 
-      const duration = data.data?.duration;
+      logger.log(
+        JSON.stringify({
+          status
+        })
+      );
+
+      const duration = data.data?.duration || data.duration;
 
       return {
         ok: await this.videosService.update({
@@ -54,7 +74,7 @@ export class VideosService {
         status
       };
     } catch (error) {
-      logger.error(error);
+      logger.error({ error });
 
       return {
         ok: false,
