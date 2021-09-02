@@ -3,14 +3,8 @@ import { VideosClient } from './videos.client';
 import { VideosMicroserviceService } from './videos.service';
 
 @Module({
-  imports: [
-    VideosClient,
-  ],
-  providers: [
-    VideosMicroserviceService,
-  ],
-  exports: [
-    VideosMicroserviceService,
-  ]
+  imports: [VideosClient],
+  providers: [VideosMicroserviceService],
+  exports: [VideosMicroserviceService]
 })
 export class VideosMicroserviceModule {}

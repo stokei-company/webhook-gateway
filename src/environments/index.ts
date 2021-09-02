@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv';
-dotenv.config()
+dotenv.config();
 
 // ------- ENVIRONMENT -------
 export const NODE_ENV_TYPES = {
-    DEV: 'development',
-    PROD: 'production',
-    TEST: 'test',
+  DEV: 'development',
+  PROD: 'production',
+  TEST: 'test'
 };
 export const NODE_ENV: string = process.env.NODE_ENV || NODE_ENV_TYPES.DEV;
 export const isDevelopment: boolean = NODE_ENV === NODE_ENV_TYPES.DEV;

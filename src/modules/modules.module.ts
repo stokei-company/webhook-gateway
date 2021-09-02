@@ -4,10 +4,6 @@ import { PaymentsModule } from './payments/payments.module';
 import { VideosModule } from './videos/videos.module';
 
 @Module({
-  imports: [
-    MicroservicesModule,
-    PaymentsModule,
-    VideosModule,
-  ]
+  imports: [MicroservicesModule, PaymentsModule, VideosModule]
 })
 export class ModulesModule {}

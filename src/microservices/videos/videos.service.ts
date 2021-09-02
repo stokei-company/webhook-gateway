@@ -8,37 +8,40 @@ import { VideoModel } from './models/video.model';
 
 @Injectable()
 export class VideosMicroserviceService extends ServiceMicroservice {
-    constructor(
-        @Inject(VIDEOS_SERVICE)
-        client: ClientProxy
-    ) {
-        super({
-            client,
-            prefixPatternName: VIDEOS_PATTERN_NAME
-        });
-    }
+  constructor(
+    @Inject(VIDEOS_SERVICE)
+    client: ClientProxy
+  ) {
+    super({
+      client,
+      prefixPatternName: VIDEOS_PATTERN_NAME
+    });
+  }
 
-    async create(data: CreateVideoDTO): Promise<VideoModel> {
-        return await this.send(this.createPatternName('create'), data);
-    }
+  async create(data: CreateVideoDTO): Promise<VideoModel> {
+    return await this.send(this.createPatternName('create'), data);
+  }
 
-    async update(data: UpdateVideoDTO): Promise<boolean> {
-        return await this.send(this.createPatternName('update'), data);
-    }
+  async update(data: UpdateVideoDTO): Promise<boolean> {
+    return await this.send(this.createPatternName('update'), data);
+  }
 
-    async findById(data: string): Promise<VideoModel> {
-        return await this.send(this.createPatternName('findById'), data);
-    }
+  async findById(data: string): Promise<VideoModel> {
+    return await this.send(this.createPatternName('findById'), data);
+  }
 
-    async findByFilename(data: string): Promise<VideoModel> {
-        return await this.send(this.createPatternName('findByFilename'), data);
-    }
+  async findByFilename(data: string): Promise<VideoModel> {
+    return await this.send(this.createPatternName('findByFilename'), data);
+  }
 
-    async findAllParent(data: { parent: string, parentType: string }): Promise<VideoModel[]> {
-        return await this.send(this.createPatternName('findByParent'), data);
-    }
+  async findAllParent(data: {
+    parent: string;
+    parentType: string;
+  }): Promise<VideoModel[]> {
+    return await this.send(this.createPatternName('findByParent'), data);
+  }
 
-    async findByIds(data: string[]): Promise<VideoModel[]> {
-        return await this.send(this.createPatternName('findByIds'), data);
-    }
+  async findByIds(data: string[]): Promise<VideoModel[]> {
+    return await this.send(this.createPatternName('findByIds'), data);
+  }
 }

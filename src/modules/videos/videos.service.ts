@@ -1,59 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { VideoStatus } from '~/microservices/videos/enums/video-status.enum';
 import { VideosMicroserviceService } from '~/microservices/videos/videos.service';
+import Mux from '@mux/mux-node';
 
 @Injectable()
 export class VideosService {
-	constructor(
-		private readonly videosService: VideosMicroserviceService,
-	) { }
+  constructor(private readonly videosService: VideosMicroserviceService) {}
 
-	async changeStatus(data: any) {
-		try {
-			const video = await this.videosService.findByFilename(data.filename);
-			if(!video){
-				throw new Error("Video not found!");
-			}
-			
-			let status = data.status;
-			/*
-				downloading ->	Video is being downloaded to Qencode server.
-				queued 		->	Task is waiting for available encoders.
-				encoding 	->	Video is being transcoded.
-				saving 		->	Video is being saved to destination location.
-				completed 	->	The transcoding job has completed successfully and the videos were saved to the destination.
-			*/
-			const statusResponse = {
-				downloading: VideoStatus.PENDING,
-				queued: VideoStatus.PENDING,
-				encoding: VideoStatus.ENCODING,
-				saving: VideoStatus.SAVING,
-				completed: VideoStatus.AVAILABLE,
-			};
-			status = statusResponse[status];
+  // Using MUX Encoder
+  async changeStatus(data: any) {
+    try {
+      if (!data) {
+        throw new Error('Data not found!');
+      }
+      const assetId = data?.object?.type === 'asset' ? data?.object?.id : null;
+      if (!assetId) {
+        throw new Error('MuxAsset not found!');
+      }
+      const mux = new Mux();
+      const asset = await mux.Video.Assets.get(assetId);
+      if (!asset) {
+        throw new Error('MuxAsset not found!');
+      }
 
-			const videos = new Array(data.videos);
-			const sizes = videos
-				.map(video => video.meta.height ? "" + (video.meta.height) : null)
-				.filter(item => item !== null);
-			const volume = data.source_size;
-			const duration = data.duration;
+      const video = await this.videosService.findById(asset.passthrough);
+      if (!video) {
+        throw new Error('Video not found!');
+      }
 
-			return {
-				ok: await this.videosService.update({
-					id: video && video.id,
-					status,
-					volume,
-					duration,
-					sizes,
-				}),
-				status,
-			};
-		} catch (error) {
-			return {
-				ok: false,
-				error,
-			};
-		}
-	}
+      const playbackId =
+        asset.playback_ids?.length > 0 ? asset.playback_ids[0].id : null;
+
+      let status = null;
+      if (asset.status === 'ready') {
+        status = VideoStatus.AVAILABLE;
+      } else if (asset.status === 'errored') {
+        status = VideoStatus.CANCELED;
+      }
+
+      const duration = asset.duration;
+
+      return {
+        ok: await this.videosService.update({
+          id: video.id,
+          status,
+          duration,
+          assetId: playbackId
+        }),
+        status
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error
+      };
+    }
+  }
 }

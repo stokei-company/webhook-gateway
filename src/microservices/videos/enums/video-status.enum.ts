@@ -1,7 +1,5 @@
-export enum VideoStatus{
-    PENDING = 'pending',
-    ENCODING = 'encoding',
-    SAVING = 'saving',
-    AVAILABLE = 'available',
-    FINISHED = 'finished',
+export enum VideoStatus {
+  PENDING = 'pending',
+  CANCELED = 'canceled',
+  AVAILABLE = 'available'
 }

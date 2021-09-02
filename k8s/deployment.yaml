@@ -13,7 +13,7 @@ spec:
         app: webhook-gateway
     spec:
       imagePullSecrets:
-      - name: registry-credentials
+        - name: registry-credentials
       containers:
         - name: webhook-gateway
           image: stokei/webhook-gateway:latest
@@ -28,6 +28,16 @@ spec:
                 configMapKeyRef:
                   name: urls-configmap
                   key: webhook-gateway-url
+            - name: MUX_TOKEN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: uploads-secret
+                  key: video-encoder-id
+            - name: MUX_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: uploads-secret
+                  key: video-encoder-secret
             - name: MICROSERVICE_URL
               valueFrom:
                 secretKeyRef:

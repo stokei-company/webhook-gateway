@@ -14,11 +14,13 @@ import { CheckExistsXmlMiddleware } from './shared/middlewares/check-exists-xml.
   app.use(helmet());
   app.use(cookieParser());
   //app.use(csurf({ cookie: true }));
-  app.use(rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-  }));
-  
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100 // limit each IP to 100 requests per windowMs
+    })
+  );
+
   const logger = new Logger('Webhook - Gateway');
 
   await app.listen(SERVER_PORT || 3000, SERVER_HOST);
