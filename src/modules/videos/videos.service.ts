@@ -21,14 +21,6 @@ export class VideosService {
       const videoId = data.data?.passthrough || data.passthrough;
       let statusBody = data.data?.status || data.status;
 
-      logger.log(
-        JSON.stringify({
-          videoId,
-          statusBody,
-          data
-        })
-      );
-
       const mux = new Mux();
       let asset = null;
       try {
@@ -43,24 +35,12 @@ export class VideosService {
         throw new Error('Video not found!');
       }
 
-      logger.log(
-        JSON.stringify({
-          video
-        })
-      );
-
       let status = null;
       if (statusBody === 'ready') {
         status = VideoStatus.AVAILABLE;
       } else if (statusBody === 'errored' || asset.errors) {
         status = VideoStatus.CANCELED;
       }
-
-      logger.log(
-        JSON.stringify({
-          status
-        })
-      );
 
       const duration = data.data?.duration || data.duration;
 
@@ -74,7 +54,7 @@ export class VideosService {
         status
       };
     } catch (error) {
-      logger.error({ error });
+      logger.error(JSON.stringify({ error }));
 
       return {
         ok: false,
