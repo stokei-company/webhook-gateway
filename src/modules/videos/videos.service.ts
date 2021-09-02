@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { VideoStatus } from '~/microservices/videos/enums/video-status.enum';
 import { VideosMicroserviceService } from '~/microservices/videos/videos.service';
 import Mux from '@mux/mux-node';
@@ -9,6 +9,7 @@ export class VideosService {
 
   // Using MUX Encoder
   async changeStatus(data: any) {
+    const logger = new Logger(VideosService.name);
     try {
       if (!data) {
         throw new Error('Data not found!');
@@ -17,28 +18,31 @@ export class VideosService {
       if (!assetId) {
         throw new Error('MuxAsset not found!');
       }
-      const mux = new Mux();
-      const asset = await mux.Video.Assets.get(assetId);
-      if (!asset) {
-        throw new Error('MuxAsset not found!');
-      }
+      const videoId = data.data?.passthrough;
+      let statusBody = data.data?.status;
 
-      const video = await this.videosService.findById(asset.passthrough);
+      const mux = new Mux();
+      let asset = null;
+      try {
+        asset = await mux.Video.Assets.get(assetId);
+      } catch (error) {}
+
+      const playbackId =
+        asset?.playback_ids?.length > 0 ? asset?.playback_ids[0].id : null;
+
+      const video = await this.videosService.findById(videoId);
       if (!video) {
         throw new Error('Video not found!');
       }
 
-      const playbackId =
-        asset.playback_ids?.length > 0 ? asset.playback_ids[0].id : null;
-
       let status = null;
-      if (asset.status === 'ready') {
+      if (statusBody === 'ready') {
         status = VideoStatus.AVAILABLE;
-      } else if (asset.status === 'errored') {
+      } else if (statusBody === 'errored' || asset.errors) {
         status = VideoStatus.CANCELED;
       }
 
-      const duration = asset.duration;
+      const duration = data.data?.duration;
 
       return {
         ok: await this.videosService.update({
@@ -50,6 +54,8 @@ export class VideosService {
         status
       };
     } catch (error) {
+      logger.error(error);
+
       return {
         ok: false,
         error
