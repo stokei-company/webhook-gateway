@@ -1,7 +1,7 @@
 export class ChangePaymentStatusDTO {
-  readonly orderId: string;
+  readonly transaction?: any;
+  readonly paymentId: string;
   readonly provider: string;
-  readonly secretCode: string;
-  readonly token: string;
+  readonly notificationCode: string;
   readonly status?: string;
 }
