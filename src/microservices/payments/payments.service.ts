@@ -6,6 +6,7 @@ import { ApprovePaymentDTO } from './dtos/approve-payment.dto';
 import { CancelPaymentDTO } from './dtos/cancel-payment.dto';
 import { RefundPaymentDTO } from './dtos/refund-payment.dto';
 import { ReversePaymentDTO } from './dtos/reverse-payment.dto';
+import { UpdatePaymentDTO } from './dtos/update-payment.dto';
 
 @Injectable()
 export class PaymentsMicroserviceService extends ServiceMicroservice {
@@ -33,5 +34,9 @@ export class PaymentsMicroserviceService extends ServiceMicroservice {
 
   async reverse(data: ReversePaymentDTO) {
     return await this.emit(this.createPatternName('reverse'), data);
+  }
+
+  async update(data: UpdatePaymentDTO) {
+    return await this.emit(this.createPatternName('update'), data);
   }
 }

@@ -22,6 +22,7 @@ export class PaymentsService {
       const boletoUrl = data.transaction?.boleto_url;
 
       const paymentData = {
+        paymentId: data.paymentId,
         transactionId: data.transaction?.id,
         provider: data.provider,
         notificationCode: data.notificationCode,
@@ -38,6 +39,24 @@ export class PaymentsService {
       } else if (refund) {
         await this.paymentsService.refund(paymentData);
       }
+
+      await this.paymentsService.update({
+        paymentId: data.paymentId,
+        ...(data.transaction?.boleto_url && {
+          boleto: { url: data.transaction.boleto_url }
+        }),
+        ...((data.transaction?.card_brand ||
+          data.transaction?.card_last_digits) && {
+          creditCard: {
+            ...(data.transaction?.card_brand && {
+              brand: data.transaction?.card_brand
+            }),
+            ...(data.transaction?.card_last_digits && {
+              lastFourNumbers: data.transaction?.card_last_digits
+            })
+          }
+        })
+      });
     } catch (error) {}
     return {
       ok
